@@ -2,6 +2,7 @@ package ari
 
 import (
 	"fmt"
+	"net/url"
 
 	"github.com/jmcvetta/napping"
 )
@@ -27,11 +28,11 @@ func (c *Client) Get(url string, p *napping.Params, results interface{}) (*nappi
 	return c.checkNappingError(res, err, errMsg)
 }
 
-func (c *Client) Delete(url string, results interface{}) (*napping.Response, error) {
-	fullUrl := c.makeFullUrl(url)
+func (c *Client) Delete(urlStr string, results interface{}) (*napping.Response, error) {
+	fullUrl := c.makeFullUrl(urlStr)
 	var errMsg errorResponse
 	c.Log("Sending DELETE request to %s", fullUrl)
-	res, err := c.session.Delete(fullUrl, results, &errMsg)
+	res, err := c.session.Delete(fullUrl, &url.Values{}, results, &errMsg)
 	return c.checkNappingError(res, err, errMsg)
 }
 
